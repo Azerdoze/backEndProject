@@ -42,8 +42,6 @@ class Character extends base {
         Where
             user_characters.user_character_id = ?
         ");
-
-        // duvida: como transformar o ID em string ou vale mais a pena reformular em autoincremento
         
         $query->execute([ $id ]);
 
@@ -73,5 +71,38 @@ class Character extends base {
         ]);
 
         return $this -> db -> lastInsertId();
+    }
+    public function update( $id, $data ) {
+        $query = $this->db->prepare("
+            UPDATE
+                user_characters
+            SET     
+            user_character_name = ?,
+            nation_id = ?,
+            user_character_classes = ?,
+            user_character_physical_description = ?,
+            user_character_mental_description = ?,
+            belongs_to_user = ?
+            WHERE
+                user_character_id = ?
+        ");
+
+        return $query->execute([
+            $data["user_character_name"],
+            $data["nation_id"],
+            $data["user_character_classes"],
+            $data["user_character_physical_description"],
+            $data["user_character_mental_description"],
+            $data["belongs_to_user"],
+            $id
+        ]);
+    }
+    public function delete( $id ) {
+        $query = $this->db->prepare("
+            DELETE FROM user_characters
+            WHERE user_character_id = ?
+        ");
+        
+        return $query->execute([ $id ]);
     }
 }

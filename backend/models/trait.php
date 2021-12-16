@@ -48,4 +48,29 @@ class NationTrait extends Base {
 
         return $this -> db -> lastInsertId();
     }
+    public function update( $id, $data ) {
+        $query = $this->db->prepare("
+            UPDATE
+                traits
+            SET     
+                trait_name = ?,
+                trait_description = ?
+            WHERE
+                trait_id = ?
+        ");
+
+        return $query->execute([
+            $data["trait_name"],
+            $data["trait_description"],
+            $id
+        ]);
+    }
+    public function delete( $id ) {
+        $query = $this->db->prepare("
+            DELETE FROM traits
+            WHERE trait_id = ?
+        ");
+
+        return $query->execute([ $id ]);
+    }
 }

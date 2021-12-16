@@ -29,7 +29,11 @@ class Region extends base {
     public function create ( $data ) {
         $query = $this->db->prepare("
             INSERT INTO regions
-            (region_id, region_name, region_description)
+            (
+                region_id,
+                region_name,
+                region_description
+            )
             VALUES(?, ?)
         ");
         $query->execute([

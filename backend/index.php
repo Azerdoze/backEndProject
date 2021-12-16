@@ -15,8 +15,6 @@
 
         $url_parts = explode("/", $_SERVER["REQUEST_URI"]);
 
-        // print_r($url_parts);
-
         $controllers = [
             "regions",
             "nations",
@@ -33,8 +31,6 @@
         if(!empty($url_parts[3])) {
             $id = $url_parts[3];
         } 
-
-        // echo "<pre>"; print_r($url_parts); exit;
 
         if( !in_array($controller, $controllers) ) {
             header("HTTP/1.1 400 Bad Request");

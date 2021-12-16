@@ -9,9 +9,7 @@ class Nation extends base {
                 nations.nation_id,
                 nations.nation_name,
                 nations.nation_summary,
-                nations.nation_description,
                 nations.nation_hub,
-                nations.nation_hub_description,
                 regions.region_name,
                 parentnations.nation_name AS parent_nation
             FROM    
@@ -47,7 +45,6 @@ class Nation extends base {
         WHERE
             nations.nation_id = ?
         ");
-        // duvida: como transformar o ID em string ou vale mais a pena reformular em autoincremento
         
         $query->execute([ $id ]);
 
@@ -55,7 +52,7 @@ class Nation extends base {
     }
 
     public function create ( $data ) {
-
+        // being created, but not showing up on the get list
         $query = $this -> db -> prepare ("
             INSERT INTO nations
                 (
@@ -85,5 +82,37 @@ class Nation extends base {
         ]);
 
         return $this -> db -> lastInsertId();
+    }
+
+    public function update( $id, $data ) {
+        $query = $this->db->prepare("
+            UPDATE
+                nations
+            SET     
+                nation_id = ?,
+                nation_name = ?,
+                nation_summary = ?,
+                nation_description = ?,
+                nation_hub = ?,
+                nation_hub_description = ?,
+                nation_banner = ?,
+                region_id = ?,
+                belongs_to = ?
+            WHERE
+                nation_id = ?
+        ");
+
+        return $query->execute([
+            $data["nation_id"],
+            $data["nation_name"],
+            $data["nation_summary"],
+            $data["nation_description"],
+            $data["nation_hub"],
+            $data["nation_hub_description"],
+            $data["nation_banner"],
+            $data["region_id"],
+            $data["belongs_to"],
+            $id
+        ]);
     }
 }
