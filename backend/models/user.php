@@ -35,8 +35,7 @@ class User extends base {
                 user_password,
                 user_country,
                 user_city,
-                is_admin,
-                newsletter
+                is_admin
             FROM    users
         ");
 
