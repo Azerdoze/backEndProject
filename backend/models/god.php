@@ -92,4 +92,14 @@ class God extends base {
             $id
         ]);
     }
+    public function delete( $id ) {
+        $query = $this->db->prepare("
+            DELETE FROM gods
+            WHERE gods_id = ?
+        ");
+
+        return $query->execute([
+            $id
+        ]);
+    }
 }

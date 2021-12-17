@@ -119,4 +119,14 @@ class Order extends base {
             $id
         ]);
     }
+    public function delete( $id ) {
+        $query = $this->db->prepare("
+            DELETE FROM orders
+            WHERE order_id = ?
+        ");
+
+        return $query->execute([
+            $id
+        ]);
+    }
 }

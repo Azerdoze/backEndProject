@@ -85,7 +85,7 @@ class User extends base {
                 $data["user_country"],
                 $data["user_city"]
             ]);
-            
+
             return $this -> db -> lastInsertId();
 
     }
@@ -109,6 +109,16 @@ class User extends base {
             $data["user_password"],
             $data["user_country"],
             $data["user_city"],
+            $id
+        ]);
+    }
+    public function delete( $id ) {
+        $query = $this->db->prepare("
+            DELETE FROM users
+            WHERE user_id = ?
+        ");
+
+        return $query->execute([
             $id
         ]);
     }

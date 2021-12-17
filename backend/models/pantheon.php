@@ -77,4 +77,14 @@ class Pantheon extends base {
             $id
         ]);
     }
+    public function delete( $id ) {
+        $query = $this->db->prepare("
+            DELETE FROM pantheons
+            WHERE pantheon_id = ?
+        ");
+
+        return $query->execute([
+            $id
+        ]);
+    }
 }

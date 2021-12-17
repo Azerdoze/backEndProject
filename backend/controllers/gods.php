@@ -59,3 +59,21 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
             echo '{"message":"Bad Request"}';
         }
 }
+else if($_SERVER["REQUEST_METHOD"] === "DELETE" ) {
+    if(!empty($id)) {
+        $result = $model->delete($id);
+
+        if($result) {
+            header("HTTP/1.1 202 Accepted");
+            echo '{"message":"Deleted ID ' .$id. '"}';
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            echo '{"message":"Bad Request"}';
+        }
+    }
+}
+else {
+    header("HTTP/1.1 405 Method Not Allowed");
+    echo '{"message":"Method Not Allowed"}';
+}
