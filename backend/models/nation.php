@@ -52,7 +52,7 @@ class Nation extends base {
     }
 
     public function create ( $data ) {
-        // being created, but not showing up on the get list
+
         $query = $this -> db -> prepare ("
             INSERT INTO nations
                 (

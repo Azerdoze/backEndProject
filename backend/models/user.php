@@ -75,7 +75,7 @@ class User extends base {
                         user_city
                         )
                 VALUES
-                (?, ?, ?, ?, ?, ?)
+                (?, ?, ?, ?, ?)
             ");
 
             $query -> execute ([
@@ -85,7 +85,7 @@ class User extends base {
                 $data["user_country"],
                 $data["user_city"]
             ]);
-            // erro no password_hash? porquê?
+            
             return $this -> db -> lastInsertId();
 
     }

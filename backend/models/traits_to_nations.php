@@ -21,6 +21,8 @@ class TraitToNation extends base {
 
         return $query->fetchAll( PDO::FETCH_ASSOC );
     }
+
+    // where to put?
     public function create( $data ) {
 
         $query = $this->db->prepare("

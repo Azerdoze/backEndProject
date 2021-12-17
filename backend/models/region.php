@@ -16,7 +16,7 @@ class Region extends base {
 
     public function getRegion($id) {
         $query = $this -> db -> prepare("
-            SELECT  region_id, region_name
+            SELECT  region_id, region_name, region_description
             FROM    regions
             WHERE   region_id = ?
         ");
@@ -26,6 +26,7 @@ class Region extends base {
         return $query->fetch( PDO::FETCH_ASSOC );
     }
 
+    // not working, returning a status code 200 and nothing else
     public function create ( $data ) {
         $query = $this->db->prepare("
             INSERT INTO regions
@@ -34,7 +35,7 @@ class Region extends base {
                 region_name,
                 region_description
             )
-            VALUES(?, ?)
+            VALUES (?, ?, ?)
         ");
         $query->execute([
             $data["region_id"],
@@ -43,5 +44,25 @@ class Region extends base {
         ]);
 
         return $this->db->lastInsertId();
+    }
+
+    public function update( $id, $data ) {
+        $query = $this->db->prepare("
+            UPDATE
+                regions
+            SET
+                region_id = ?,
+                region_name = ?,
+                region_description = ?
+            WHERE
+                region_id = ?
+        ");
+
+        return $query->execute([
+            $data["region_id"],
+            $data["region_name"],
+            $data["region_description"],
+            $id
+        ]);
     }
 }

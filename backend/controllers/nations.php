@@ -54,7 +54,7 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
         !empty($id) &&
         !empty($data)
         ) {
-            $result = $model->update($id, $data);
+            $result = $nationmodel->update($id, $data);
             if($result) {
                 header("HTTP/1.1 202 Accepted");
                 echo json_encode($data);
