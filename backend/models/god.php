@@ -24,11 +24,12 @@ class God extends base {
     public function getGod($id) {
         $query = $this -> db -> prepare("
             SELECT  
-                god_name AS name,
-                god_alignment AS alignment,
-                god_domains AS domains,
-                god_mysteries AS mysteries,
-                god_fav_weapon AS favoured_weapon,
+                god_name,
+                god_alignment,
+                god_domains,
+                god_mysteries,
+                god_fav_weapon,
+                pantheon_id,
                 pantheon_name AS belongs_to_pantheon
             FROM    gods
             INNER JOIN pantheons USING (pantheon_id)

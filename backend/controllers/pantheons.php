@@ -3,6 +3,38 @@ require("models/pantheon.php");
 
 $model = new Pantheon();
 
+// Validation METHOD for CRUD
+function validator($data) {
+    if(
+        !empty($data) &&
+        isset($data["pantheon_name"]) &&
+        mb_strlen($data["pantheon_name"]) >= 2 &&
+        mb_strlen($data["pantheon_name"]) <= 30 &&
+        isset($data["pantheon_summary"]) &&
+        mb_strlen($data["pantheon_summary"]) >= 2 &&
+        mb_strlen($data["pantheon_summary"]) <= 200 &&
+        isset($data["pantheon_description"]) &&
+        mb_strlen($data["pantheon_description"]) >= 0 &&
+        mb_strlen($data["pantheon_description"]) <= 65535 &&
+        isset($data["pantheon_scope"]) &&
+        mb_strlen($data["pantheon_scope"]) >= 2 &&
+        mb_strlen($data["pantheon_scope"]) <= 50 &&
+        ( 
+            !isset($data["pantheon_banner"]) ||
+            (
+                isset($data["pantheon_banner"]) &&
+                mb_strlen($data["pantheon_banner"]) >= 0 &&
+                mb_strlen($data["pantheon_banner"]) <= 100
+            )
+        )
+    ) {
+        return true;
+    }
+    return false;
+}
+
+
+// CRUD
 if($_SERVER["REQUEST_METHOD"] === "GET" ) {
     if( isset( $id )) {
         $data = $model->getPantheon( $id );
@@ -24,7 +56,7 @@ else if($_SERVER["REQUEST_METHOD"] === "POST" ) {
 
     $data = json_decode( file_get_contents("php://input"), true );
 
-    if( !empty($data) ) {
+    if( validator($data) ) {
 
         $id = $model->create( $data );
 
@@ -43,7 +75,7 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 
     if(
         !empty($id) &&
-        !empty($data)
+        validator($data)
         ) {
             $result = $model->update($id, $data);
             if($result) {

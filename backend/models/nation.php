@@ -34,6 +34,9 @@ class Nation extends base {
             nations.nation_description,
             nations.nation_hub,
             nations.nation_hub_description,
+            nations.nation_banner,
+            nations.region_id,
+            nations.belongs_to,
             regions.region_name,
             parentnations.nation_name AS parent_nation
         FROM    
@@ -69,7 +72,7 @@ class Nation extends base {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
-        $query -> execute ([
+        return $query -> execute ([
             $data["nation_id"],
             $data["nation_name"],
             $data["nation_summary"],
@@ -81,7 +84,6 @@ class Nation extends base {
             $data["belongs_to"]
         ]);
 
-        return $this -> db -> lastInsertId();
     }
 
     public function update( $id, $data ) {
@@ -89,7 +91,6 @@ class Nation extends base {
             UPDATE
                 nations
             SET     
-                nation_id = ?,
                 nation_name = ?,
                 nation_summary = ?,
                 nation_description = ?,
@@ -103,7 +104,6 @@ class Nation extends base {
         ");
 
         return $query->execute([
-            $data["nation_id"],
             $data["nation_name"],
             $data["nation_summary"],
             $data["nation_description"],

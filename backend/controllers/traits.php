@@ -3,6 +3,25 @@ require("models/trait.php");
 
 $model = new NationTrait();
 
+// Validation METHOD for CRUD
+
+function validator($data) {
+    if(
+        !empty($data) &&
+        isset($data["trait_name"]) &&
+        mb_strlen($data["trait_name"]) >= 2 &&
+        mb_strlen($data["trait_name"]) <= 50 &&
+        isset($data["trait_description"]) &&
+        mb_strlen($data["trait_description"]) >= 0 &&
+        mb_strlen($data["trait_description"]) <= 65535
+    ) {
+        return true;
+    }
+    return false;
+}
+
+// CRUD
+
 if($_SERVER["REQUEST_METHOD"] === "GET" ) {
     if( isset( $id )) {
         $data = $model->getNationTrait( $id );
@@ -24,7 +43,7 @@ else if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
 
-    if ( !empty($data) ) {
+    if ( validator($data) ) {
         $id = $model -> create ( $data );
 
         header("HTTP/1.1 202 Accepted");
@@ -43,7 +62,7 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 
     if(
         !empty($id) &&
-        !empty($data)
+        validator($data)
         ) {
             $result = $model->update($id, $data);
             if($result) {

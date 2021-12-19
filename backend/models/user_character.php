@@ -54,17 +54,19 @@ class Character extends base {
                     user_character_name,
                     nation_id,
                     user_character_classes,
+                    user_character_img,
                     user_character_physical_description,
                     user_character_mental_description,
                     belongs_to_user
                     )
             VALUES
-            (?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?)
         ");
         $query -> execute ([
             $data["user_character_name"],
             $data["nation_id"],
             $data["user_character_classes"],
+            $data["user_character_img"],
             $data["user_character_physical_description"],
             $data["user_character_mental_description"],
             $data["belongs_to_user"]
@@ -80,6 +82,7 @@ class Character extends base {
             user_character_name = ?,
             nation_id = ?,
             user_character_classes = ?,
+            user_character_img = ?,
             user_character_physical_description = ?,
             user_character_mental_description = ?,
             belongs_to_user = ?
@@ -91,6 +94,7 @@ class Character extends base {
             $data["user_character_name"],
             $data["nation_id"],
             $data["user_character_classes"],
+            $data["user_character_img"],
             $data["user_character_physical_description"],
             $data["user_character_mental_description"],
             $data["belongs_to_user"],

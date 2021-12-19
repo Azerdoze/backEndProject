@@ -28,6 +28,7 @@ class Region extends base {
 
     // not working, returning a status code 200 and nothing else
     public function create ( $data ) {
+
         $query = $this->db->prepare("
             INSERT INTO regions
             (
@@ -37,13 +38,13 @@ class Region extends base {
             )
             VALUES (?, ?, ?)
         ");
-        $query->execute([
+
+        return $query->execute([
             $data["region_id"],
             $data["region_name"],
             $data["region_description"]
         ]);
 
-        return $this->db->lastInsertId();
     }
 
     public function update( $id, $data ) {
@@ -51,7 +52,6 @@ class Region extends base {
             UPDATE
                 regions
             SET
-                region_id = ?,
                 region_name = ?,
                 region_description = ?
             WHERE
@@ -59,9 +59,19 @@ class Region extends base {
         ");
 
         return $query->execute([
-            $data["region_id"],
             $data["region_name"],
             $data["region_description"],
+            $id
+        ]);
+    }
+
+    public function delete( $id ) {
+        $query = $this->db->prepare("
+            DELETE FROM regions
+            WHERE region_id = ?
+        ");
+
+        return $query->execute([
             $id
         ]);
     }

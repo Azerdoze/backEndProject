@@ -3,6 +3,32 @@ require("models/god.php");
 
 $model = new God();
 
+function validator($data) {
+    if(
+        !empty($data) &&
+        isset($data["god_name"]) &&
+        mb_strlen($data["god_name"]) >= 2 &&
+        mb_strlen($data["god_name"]) <= 30 &&
+        isset($data["god_alignment"]) &&
+        mb_strlen($data["god_alignment"]) >= 2 &&
+        mb_strlen($data["god_alignment"]) <= 15 &&
+        isset($data["god_domains"]) &&
+        mb_strlen($data["god_domains"]) >= 8 &&
+        mb_strlen($data["god_domains"]) <= 50 &&
+        isset($data["god_mysteries"]) &&
+        mb_strlen($data["god_mysteries"]) >= 2 &&
+        mb_strlen($data["god_mysteries"]) <= 50 &&
+        isset($data["god_fav_weapon"]) &&
+        mb_strlen($data["god_fav_weapon"]) >= 2 &&
+        mb_strlen($data["god_fav_weapon"]) <= 50 &&
+        isset($data["pantheon_id"]) &&
+        is_numeric($data["pantheon_id"])
+    ) {
+        return true;
+    }
+    return false;
+}
+
 if($_SERVER["REQUEST_METHOD"] === "GET" ) {
     if( isset( $id )) {
         $data = $model->getGod( $id );
@@ -23,7 +49,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
 
-    if ( !empty($data) ) {
+    if ( validator($data) ) {
         $id = $model -> create ( $data );
 
         header("HTTP/1.1 202 Accepted");
@@ -42,7 +68,7 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 
     if(
         !empty($id) &&
-        !empty($data)
+        validator($data)
         ) {
             $result = $model->update($id, $data);
             if($result) {

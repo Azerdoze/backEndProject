@@ -3,6 +3,34 @@ require("models/user.php");
 
 $model = new User();
 
+// Validation METHOD for CRUD
+
+function validator($data) {
+    if(
+        !empty($data) &&
+        isset($data["user_name"]) &&
+        mb_strlen($data["user_name"]) >= 2 &&
+        mb_strlen($data["user_name"]) <= 80 &&
+        isset($data["user_email"]) &&
+        mb_strlen($data["user_email"]) >= 6 &&
+        mb_strlen($data["user_email"]) <= 252 &&
+        isset($data["user_password"]) &&
+        mb_strlen($data["user_password"]) >= 8 &&
+        mb_strlen($data["user_password"]) <= 255 &&
+        isset($data["user_country"]) &&
+        mb_strlen($data["user_country"]) >= 2 &&
+        mb_strlen($data["user_country"]) <= 50 &&
+        isset($data["user_city"]) &&
+        mb_strlen($data["user_city"]) >= 2 &&
+        mb_strlen($data["user_city"]) <= 30
+    ) {
+        return true;
+    }
+    return false;
+}
+
+// CRUD
+
 if($_SERVER["REQUEST_METHOD"] === "GET" ) {
     if( isset( $id )) {
         $data = $model->getUser( $id );

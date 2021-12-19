@@ -52,6 +52,7 @@ class Order extends base {
                 order_official_name,
                 order_summary,
                 order_description,
+                order_banner,
                 order_scope,
                 order_alignment,
                 order_headquarters,
@@ -62,7 +63,7 @@ class Order extends base {
                 order_rivals
             )
             VALUES
-                ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $query -> execute ([
@@ -70,6 +71,7 @@ class Order extends base {
             $data["order_official_name"],
             $data["order_summary"],
             $data["order_description"],
+            $data["order_banner"],
             $data["order_scope"],
             $data["order_alignment"],
             $data["order_headquarters"],
@@ -91,6 +93,7 @@ class Order extends base {
                 order_official_name = ?,
                 order_summary = ?,
                 order_description = ?,
+                order_banner = ?,
                 order_scope = ?,
                 order_alignment = ?,
                 order_headquarters = ?,
@@ -108,6 +111,7 @@ class Order extends base {
             $data["order_official_name"],
             $data["order_summary"],
             $data["order_description"],
+            $data["order_banner"],
             $data["order_scope"],
             $data["order_alignment"],
             $data["order_headquarters"],

@@ -26,6 +26,8 @@ class User extends base {
         return [];
     }
 
+    // CRUD BELOW
+
     public function get() {
         $query = $this -> db -> prepare("
             SELECT 
