@@ -25,6 +25,30 @@ class Nation extends base {
         return $query->fetchAll( PDO::FETCH_ASSOC );
     }
 
+    public function getNationsByRegion($id) {
+        $query = $this -> db -> prepare("
+            SELECT  
+                nations.nation_id,
+                nations.nation_name,
+                nations.nation_summary,
+                nations.nation_hub,
+                regions.region_name,
+                parentnations.nation_name AS parent_nation
+            FROM    
+                nations
+            INNER JOIN
+                regions ON (nations.region_id = regions.region_id)
+            LEFT JOIN
+                nations AS parentnations ON (nations.belongs_to = parentnations.nation_id)
+            WHERE
+                nations.region_id = ?
+        ");
+
+        $query->execute([ $id ]);
+
+        return $query->fetchAll( PDO::FETCH_ASSOC );
+    }
+
     public function getNation($id) {
         $query = $this -> db -> prepare("
         SELECT  

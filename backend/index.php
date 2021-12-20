@@ -18,9 +18,11 @@
         $controllers = [
             "regions",
             "nations",
+            "nationsbyregion",
             "traits",
             "pantheons",
             "gods",
+            "godsbypantheon",
             "orders",
             "users",
             "user_characters"

@@ -21,6 +21,26 @@ class God extends base {
         return $query->fetchAll( PDO::FETCH_ASSOC );
     }
 
+    public function getGodsByPantheon( $id ) {
+        
+        $query = $this -> db ->prepare("
+            SELECT  
+                god_id,
+                god_name,
+                pantheon_name AS belongs_to_pantheon
+            FROM    
+                gods
+            INNER JOIN
+                pantheons USING (pantheon_id)
+            WHERE
+                pantheon_id = ?
+        ");
+        
+        $query -> execute([$id] );
+
+        return $query->fetchAll( PDO::FETCH_ASSOC );
+    }
+
     public function getGod($id) {
         $query = $this -> db -> prepare("
             SELECT  

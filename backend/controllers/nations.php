@@ -23,6 +23,7 @@ function sanitize($data) {
 
         $sanitize_banner = trim(htmlspecialchars (strip_tags ($data["nation_banner"]) ) );
         $data["nation_banner"] = str_replace("data:image/jpeg;base64,", "", $sanitize_banner);
+
         return $data;
     }
     return false;

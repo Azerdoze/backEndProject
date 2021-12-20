@@ -46,7 +46,6 @@ if($_SERVER["REQUEST_METHOD"] === "GET" ) {
             header("HTTP/1.1 404 Not Found");
             echo '{"message":"Not Found"}';
         }
-
     }
     else {
         echo json_encode( $model->get() );
