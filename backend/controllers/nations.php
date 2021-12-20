@@ -5,7 +5,30 @@ require("models/traits_to_nations.php");
 $nationmodel = new Nation();
 $traittonationmodel = new TraitToNation();
 
+// Sanitization Method for CRUD
+function sanitize($data) {
+    if( !empty($data) &&
+        (
+            !isset($data["nation_banner"]) ||
+            isset($data["nation_banner"])
+        )
+    ) {
+        $data["nation_id"] = trim(htmlspecialchars (strip_tags ($data["nation_id"]) ) );
+        $data["nation_name"] = trim(htmlspecialchars (strip_tags ($data["nation_name"]) ) );
+        $data["nation_summary"] = trim(htmlspecialchars (strip_tags ($data["nation_summary"]) ) );
+        $data["nation_description"] = trim(htmlspecialchars (strip_tags ($data["nation_description"]) ) );
+        $data["nation_hub"] = trim(htmlspecialchars (strip_tags ($data["nation_hub"]) ) );
+        $data["nation_hub_description"] = trim(htmlspecialchars (strip_tags ($data["nation_hub_description"]) ) );
+        $data["region_id"] = trim(htmlspecialchars (strip_tags ($data["region_id"]) ) );
 
+        $sanitize_banner = trim(htmlspecialchars (strip_tags ($data["nation_banner"]) ) );
+        $data["nation_banner"] = str_replace("data:image/jpeg;base64,", "", $sanitize_banner);
+        return $data;
+    }
+    return false;
+}
+
+// Validator Method for CRUD
 function validator($data) {
     if (
         !empty($data) &&
@@ -76,12 +99,15 @@ else if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
 
-    if ( validator($data) && $nationmodel -> create ( $data ) ) {
+    if (
+        validator($data) &&
+        sanitize($data) &&
+        $nationmodel -> create ( $data ) ) {
 
         header("HTTP/1.1 202 Accepted");
 
         echo '{"id":' . $data["nation_id"] . ', "message":"Success"}'; 
-        // small error parse but besides that everythings works fine, I Guess?
+
     }
     else {
         header("HTTP/1.1 400 Bad Request");

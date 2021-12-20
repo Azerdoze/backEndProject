@@ -3,6 +3,22 @@ require("models/god.php");
 
 $model = new God();
 
+// Sanitization Method for CRUD
+function sanitize($data) {
+    if( !empty($data) ) {
+        $data["god_name"] = trim(htmlspecialchars (strip_tags ($data["god_name"]) ) );
+        $data["god_alignment"] = trim(htmlspecialchars (strip_tags ($data["god_alignment"]) ) );
+        $data["god_domains"] = trim(htmlspecialchars (strip_tags ($data["god_domains"]) ) );
+        $data["god_mysteries"] = trim(htmlspecialchars (strip_tags ($data["god_mysteries"]) ) );
+        $data["god_fav_weapon"] = trim(htmlspecialchars (strip_tags ($data["god_fav_weapon"]) ) );
+        $data["pantheon_id"] = trim(htmlspecialchars (strip_tags ($data["pantheon_id"]) ) );
+
+        return $data;
+    }
+    return false;
+}
+
+// Validation Method
 function validator($data) {
     if(
         !empty($data) &&
@@ -49,7 +65,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
 
-    if ( validator($data) ) {
+    if ( validator($data) && sanitize($data) ) {
         $id = $model -> create ( $data );
 
         header("HTTP/1.1 202 Accepted");
@@ -68,7 +84,8 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 
     if(
         !empty($id) &&
-        validator($data)
+        validator($data) &&
+        sanitize($data)
         ) {
             $result = $model->update($id, $data);
             if($result) {

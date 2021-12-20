@@ -3,7 +3,35 @@ require("models/order.php");
 
 $model = new Order();
 
+// Sanitization Method for CRUD
+function sanitize($data) {
+    if(
+        !empty($data) &&
+        (
+            !isset($data["order_banner"]) ||
+            isset($data["order_banner"])
+        )
+    ) {
+        $data["order_name"] = trim(htmlspecialchars (strip_tags ($data["order_name"]) ) );
+        $data["order_official_name"] = trim(htmlspecialchars (strip_tags ($data["order_official_name"]) ) );
+        $data["order_summary"] = trim(htmlspecialchars (strip_tags ($data["order_summary"]) ) );
+        $data["order_description"] = trim(htmlspecialchars (strip_tags ($data["order_description"]) ) );
+        $data["order_scope"] = trim(htmlspecialchars (strip_tags ($data["order_scope"]) ) );
+        $data["order_alignment"] = trim(htmlspecialchars (strip_tags ($data["order_alignment"]) ) );
+        $data["order_headquarters"] = trim(htmlspecialchars (strip_tags ($data["order_headquarters"]) ) );
+        $data["order_values"] = trim(htmlspecialchars (strip_tags ($data["order_values"]) ) );
+        $data["order_goals"] = trim(htmlspecialchars (strip_tags ($data["order_goals"]) ) );
+        $data["order_allies"] = trim(htmlspecialchars (strip_tags ($data["order_allies"]) ) );
+        $data["order_enemies"] = trim(htmlspecialchars (strip_tags ($data["order_enemies"]) ) );
+        $data["order_rivals"] = trim(htmlspecialchars (strip_tags ($data["order_rivals"]) ) ); 
 
+        $sanitize_banner = trim(htmlspecialchars (strip_tags ($data["order_banner"]) ) );
+        $data["order_banner"] = str_replace("data:image/jpeg;base64,", "", $sanitize_banner);
+
+        return $data;
+    }
+    return false;
+}
 // Validation Method for CRUD
 function validator($data) {
     if(
@@ -20,9 +48,6 @@ function validator($data) {
         isset($data["order_description"]) &&
         mb_strlen($data["order_description"]) >= 0 &&
         mb_strlen($data["order_description"]) <= 65535 &&
-        isset($data["order_banner"]) &&
-        mb_strlen($data["order_banner"]) >= 0 &&
-        mb_strlen($data["order_banner"]) <= 100 &&
         isset($data["order_scope"]) &&
         mb_strlen($data["order_scope"]) >= 3 &&
         mb_strlen($data["order_scope"]) <= 30 &&
@@ -83,7 +108,7 @@ else if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
 
-    if ( validator($data) ) {
+    if ( validator($data) && sanitize($data) ) {
         $id = $model -> create ( $data );
 
         header("HTTP/1.1 202 Accepted");
@@ -101,8 +126,9 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
     $data = json_decode( file_get_contents("php://input"), true );
 
     if(
-        validator($id) &&
-        !empty($data)
+        !empty($id) &&
+        sanitize($data) &&
+        validator($data)
         ) {
             $result = $model->update($id, $data);
             if($result) {

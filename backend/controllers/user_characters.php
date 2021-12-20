@@ -3,6 +3,29 @@ require("models/user_character.php");
 
 $model = new Character();
 
+// Sanitization Method for CRUD
+function sanitize($data) {
+    if( !empty($data) &&
+        (
+            !isset($data["user_character_img"]) ||
+            isset($data["user_character_img"])
+        )
+    ) {
+        $data["user_character_name"] = trim(htmlspecialchars (strip_tags ($data["user_character_name"]) ) );
+        $data["nation_id"] = trim(htmlspecialchars (strip_tags ($data["nation_id"]) ) );
+        $data["user_character_classes"] = trim(htmlspecialchars (strip_tags ($data["user_character_classes"]) ) );
+        $data["user_character_physical_description"] = trim(htmlspecialchars (strip_tags ($data["user_character_physical_description"]) ) );
+        $data["user_character_mental_description"] = trim(htmlspecialchars (strip_tags ($data["user_character_mental_description"]) ) );
+        $data["belongs_to_user"] = trim(htmlspecialchars (strip_tags ($data["belongs_to_user"]) ) );
+
+        $sanitize_banner = trim(htmlspecialchars (strip_tags ($data["user_character_img"]) ) );
+        $data["user_character_img"] = str_replace("data:image/jpeg;base64,", "", $sanitize_banner);
+        return $data;
+    }
+    return false;
+}
+
+// Validator Method for CRUD
 function validator($data) {
     if (
         !empty($data) &&
@@ -56,7 +79,7 @@ else if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
 
-    if ( !empty($data) ) {
+    if ( validator($data) && sanitize($data) ) {
         $id = $model -> create ( $data );
 
         header("HTTP/1.1 202 Accepted");
@@ -75,7 +98,8 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 
     if(
         !empty($id) &&
-        !empty($data)
+        validator($data) &&
+        sanitize($data)
         ) {
             $result = $model->update($id, $data);
             if($result) {

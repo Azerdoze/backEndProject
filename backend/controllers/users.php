@@ -3,6 +3,20 @@ require("models/user.php");
 
 $model = new User();
 
+// Sanitization Method for CRUD
+function sanitize($data) {
+    if( !empty($data) ) {
+        $data["user_name"] = trim(htmlspecialchars (strip_tags ($data["user_name"]) ) );
+        $data["user_email"] = trim(htmlspecialchars (strip_tags ($data["user_email"]) ) );
+        $data["user_password"] = trim(htmlspecialchars (strip_tags ($data["user_password"]) ) );
+        $data["user_country"] = trim(htmlspecialchars (strip_tags ($data["user_country"]) ) );
+        $data["user_city"] = trim(htmlspecialchars (strip_tags ($data["user_city"]) ) );
+
+        return $data;
+    }
+    return false;
+}
+
 // Validation METHOD for CRUD
 
 function validator($data) {
@@ -52,7 +66,7 @@ else if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
 
-    if ( !empty($data) ) {
+    if ( validator($data) && sanitize($data) ) {
         $id = $model -> create ( $data );
 
         header("HTTP/1.1 202 Accepted");
@@ -71,7 +85,8 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 
     if(
         !empty($id) &&
-        !empty($data)
+        validator($data) &&
+        sanitize($data)
         ) {
             $result = $model->update($id, $data);
             if($result) {
