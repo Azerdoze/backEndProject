@@ -109,4 +109,20 @@ class Character extends base {
         
         return $query->execute([ $id ]);
     }
+
+    public function getItemByUser($id, $userId) {
+        $query = $this->db->prepare("
+            SELECT  user_character_id, users.user_id
+            FROM    user_characters
+            INNER JOIN  users ON (users.user_id = user_characters.user_character_id)
+            WHERE   user_character_id = ?
+            AND     users.user_id = ?
+        ");
+        $query->execute([
+            $id,
+            $userId
+        ]);
+
+        return $query->fetch();
+    }
 }

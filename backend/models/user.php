@@ -3,27 +3,19 @@ require_once("base.php");
 
 class User extends base {
 
-    public function getUserLogin( $id ) {
-        if(
-            filter_var($id["email"], FILTER_VALIDATE_EMAIL) &&
-            mb_strlen($id["password"]) >= 8 &&
-            mb_strlen($id["password"]) <= 1000 
-        ) {
-            $query = $this->db->prepare("
-                SELECT  user_id, user_name, user_password
-                FROM    users
-                WHERE   email = ?
-            ");
+    public function isValidUser($api_key) {
 
-            $query->execute([
-                $id["email"]
-            ]);
+        $query = $this->db->prepare("
+            SELECT  user_id, is_admin
+            FROM    users
+            WHERE   api_key = ?
+        ");
 
-            return $query->fetch();
-            
-        }
+        $query->execute([
+            $api_key
+        ]);
 
-        return [];
+        return $query->fetch();
     }
 
     // CRUD BELOW

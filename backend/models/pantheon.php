@@ -6,7 +6,7 @@ class Pantheon extends base {
     public function get() {
         $query = $this -> db -> prepare("
             SELECT  
-                pantheon_id, pantheon_name
+                pantheon_id, pantheon_name, pantheon_summary
             FROM    
                 pantheons
         ");
