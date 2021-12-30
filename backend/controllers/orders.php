@@ -11,7 +11,7 @@ if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
 
     if( empty($user) ) {
         header("HTTP/1.1 401 Unauthorized");
-        die ('{"message":"Wrong or missing API Key"}');
+        die ('{"message":"Wrong or missing Auth Token"}');
     }
 
     if ( !(bool)$user["is_admin"] ) {
@@ -22,13 +22,6 @@ if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
 
 // Sanitization Method for CRUD
 function sanitize($data) {
-    if(
-        !empty($data) &&
-        (
-            !isset($data["order_banner"]) ||
-            isset($data["order_banner"])
-        )
-    ) {
         $data["order_name"] = trim(htmlspecialchars (strip_tags ($data["order_name"]) ) );
         $data["order_official_name"] = trim(htmlspecialchars (strip_tags ($data["order_official_name"]) ) );
         $data["order_summary"] = trim(htmlspecialchars (strip_tags ($data["order_summary"]) ) );
@@ -40,14 +33,9 @@ function sanitize($data) {
         $data["order_goals"] = trim(htmlspecialchars (strip_tags ($data["order_goals"]) ) );
         $data["order_allies"] = trim(htmlspecialchars (strip_tags ($data["order_allies"]) ) );
         $data["order_enemies"] = trim(htmlspecialchars (strip_tags ($data["order_enemies"]) ) );
-        $data["order_rivals"] = trim(htmlspecialchars (strip_tags ($data["order_rivals"]) ) ); 
-
-        $sanitize_banner = trim(htmlspecialchars (strip_tags ($data["order_banner"]) ) );
-        $data["order_banner"] = str_replace("data:image/jpeg;base64,", "", $sanitize_banner);
+        $data["order_rivals"] = trim(htmlspecialchars (strip_tags ($data["order_rivals"]) ) );
 
         return $data;
-    }
-    return false;
 }
 // Validation Method for CRUD
 function validator($data) {
@@ -88,15 +76,7 @@ function validator($data) {
         mb_strlen($data["order_enemies"]) <= 80 &&
         isset($data["order_rivals"]) &&
         mb_strlen($data["order_rivals"]) >= 3 &&
-        mb_strlen($data["order_rivals"]) <= 80 &&
-        (
-            !isset($data["order_banner"]) ||
-            (
-                isset($data["order_banner"]) &&
-                mb_strlen($data["order_banner"]) >= 0 &&
-                mb_strlen($data["order_banner"]) <= 100
-            )
-        )
+        mb_strlen($data["order_rivals"]) <= 80
         ) {
             return true;
         }

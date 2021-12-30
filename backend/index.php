@@ -1,6 +1,13 @@
 <?php
-    // // devolver todo o texto em JSON
+
+    // devolver todo o texto em JSON
     header("Content-Type: application/json");
+    
+    // load the .env as a CONFIG file
+    define ("CONFIG", parse_ini_file(".env"));
+
+    // carregar o JWT 
+    require("../vendor/autoload.php");
 
     /* criação de CONSTANTE + costumização para remover um "/" do final */ 
         define("ROOT",
@@ -25,7 +32,8 @@
             "godsbypantheon",
             "orders",
             "users",
-            "user_characters"
+            "user_characters",
+            "login"
         ];
 
         $controller = $url_parts[2];

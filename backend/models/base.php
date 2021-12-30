@@ -1,4 +1,7 @@
 <?php
+
+use ReallySimpleJWT\Token;
+
 class Base {
 
     protected $db;
@@ -15,17 +18,20 @@ class Base {
         $headers = apache_request_headers();
         
         foreach($headers as $header => $value) {
-            if( strtolower($header) === "x-api-key" ) {
-                $api_key = trim($value);
+            if( strtolower($header) === "x-auth-token" ) {
+                $token = trim($value);
             }
         }
 
-        if( !empty($api_key) ) {
-            $user = $userModel->isValidUser($api_key);
+        $secret = "";
+        $isValid = Token::validate($token, $secret);
+
+        if($isValid) {
+            $user = Token::getPayload($token, $secret);
         }
 
         if( !empty($user) ) {
-        return $user;
+        return $user["userId"];
         }
         
         return 0;

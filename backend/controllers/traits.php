@@ -11,7 +11,7 @@ if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
 
     if( empty($user) ) {
         header("HTTP/1.1 401 Unauthorized");
-        die ('{"message":"Wrong or missing API Key"}');
+        die ('{"message":"Wrong or missing Auth Token"}');
     }
 
     if ( !(bool)$user["is_admin"] ) {

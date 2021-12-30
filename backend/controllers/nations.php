@@ -12,7 +12,7 @@ if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
 
     if( empty($user) ) {
         header("HTTP/1.1 401 Unauthorized");
-        die ('{"message":"Wrong or missing API Key"}');
+        die ('{"message":"Wrong or missing Auth Token"}');
     }
 
     if ( !(bool)$user["is_admin"] ) {
@@ -23,12 +23,7 @@ if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
 
 // Sanitization Method for CRUD
 function sanitize($data) {
-    if( !empty($data) &&
-        (
-            !isset($data["nation_banner"]) ||
-            isset($data["nation_banner"])
-        )
-    ) {
+    
         $data["nation_id"] = trim(htmlspecialchars (strip_tags ($data["nation_id"]) ) );
         $data["nation_name"] = trim(htmlspecialchars (strip_tags ($data["nation_name"]) ) );
         $data["nation_summary"] = trim(htmlspecialchars (strip_tags ($data["nation_summary"]) ) );
@@ -37,12 +32,8 @@ function sanitize($data) {
         $data["nation_hub_description"] = trim(htmlspecialchars (strip_tags ($data["nation_hub_description"]) ) );
         $data["region_id"] = trim(htmlspecialchars (strip_tags ($data["region_id"]) ) );
 
-        $sanitize_banner = trim(htmlspecialchars (strip_tags ($data["nation_banner"]) ) );
-        $data["nation_banner"] = str_replace("data:image/jpeg;base64,", "", $sanitize_banner);
-
         return $data;
-    }
-    return false;
+    
 }
 
 // Validator Method for CRUD
@@ -67,15 +58,6 @@ function validator($data) {
         isset($data["region_id"]) &&
         mb_strlen($data["region_id"]) >= 2 &&
         mb_strlen($data["region_id"]) <= 4 &&
-        ( 
-            !isset($data["nation_banner"]) ||
-            (isset($data["nation_banner"]) &&
-            mb_strlen($data["nation_banner"]) >= 0 &&
-            mb_strlen($data["nation_banner"]) <= 100)
-
-            // testar se funciona, dps rever base 64!
-        )
-        &&
         (
             !isset($data["belongs_to"]) ||
             (isset($data["belongs_to"]) &&

@@ -58,7 +58,6 @@ class Nation extends base {
             nations.nation_description,
             nations.nation_hub,
             nations.nation_hub_description,
-            nations.nation_banner,
             nations.region_id,
             nations.belongs_to,
             regions.region_name,
@@ -103,7 +102,6 @@ class Nation extends base {
             $data["nation_description"],
             $data["nation_hub"],
             $data["nation_hub_description"],
-            $data["nation_banner"],
             $data["region_id"],
             $data["belongs_to"]
         ]);
@@ -120,7 +118,6 @@ class Nation extends base {
                 nation_description = ?,
                 nation_hub = ?,
                 nation_hub_description = ?,
-                nation_banner = ?,
                 region_id = ?,
                 belongs_to = ?
             WHERE
@@ -133,7 +130,6 @@ class Nation extends base {
             $data["nation_description"],
             $data["nation_hub"],
             $data["nation_hub_description"],
-            $data["nation_banner"],
             $data["region_id"],
             $data["belongs_to"],
             $id

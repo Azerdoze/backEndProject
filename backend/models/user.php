@@ -3,19 +3,24 @@ require_once("base.php");
 
 class User extends base {
 
-    public function isValidUser($api_key) {
-
+    public function login($data) {
         $query = $this->db->prepare("
-            SELECT  user_id, is_admin
-            FROM    users
-            WHERE   api_key = ?
+            SELECT user_id, user_email, is_admin, user_name, user_password
+            FROM users
+            WHERE user_email = ?
         ");
+    
+        $query->execute([ $data["user_email"] ]);
 
-        $query->execute([
-            $api_key
-        ]);
+        $user = $query->fetch( PDO::FETCH_ASSOC );
 
-        return $query->fetch();
+        if(
+            !empty($user) &&
+            password_verify($data["user_password"], $user["user_password"])
+        ) {
+            return $user;
+        }
+        return [];
     }
 
     // CRUD BELOW
@@ -99,7 +104,7 @@ class User extends base {
         return $query->execute([
             $data["user_name"],
             $data["user_email"],
-            $data["user_password"],
+            password_hash($data["user_password"], PASSWORD_DEFAULT),
             $data["user_country"],
             $data["user_city"],
             $id
