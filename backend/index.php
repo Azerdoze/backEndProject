@@ -1,15 +1,15 @@
 <?php
 
-    // devolver todo o texto em JSON
+    // get all the text as JSON
     header("Content-Type: application/json");
     
     // load the .env as a CONFIG file
     define ("CONFIG", parse_ini_file(".env"));
 
-    // carregar o JWT 
+    // load the JWT 
     require("../vendor/autoload.php");
 
-    /* criação de CONSTANTE + costumização para remover um "/" do final */ 
+    /* CONST creation + costumization to remove a "/" from the end */ 
         define("ROOT",
             rtrim(
                 str_replace(

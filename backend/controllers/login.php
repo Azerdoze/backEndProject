@@ -3,7 +3,7 @@
 use ReallySimpleJWT\Token;
 
 if($_SERVER["REQUEST_METHOD"] === "POST") {
-    $data = json_decode(file_get_contents("php:/input"), true);
+    $data = json_decode(file_get_contents("php://input"), true);
 
     if(
         !empty($data) &&
@@ -28,15 +28,17 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
                 "userId" => $user["user_id"],
                 "mail" => $user["user_email"],
                 "name" => $user["user_name"],
+                "admin" => $user["is_admin"],
                 "iat" => time()
             ];
 
             $secret = CONFIG["SECRET_KEY"];
 
-            
             $token = Token::customPayload($payload, $secret);
             
             header("X-AUTH-TOKEN: " . $token);
+
+            // echo '{"X-Auth-Token" : "'. $token .'"}';
 
         }
         else {

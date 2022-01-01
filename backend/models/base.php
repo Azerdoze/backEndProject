@@ -14,7 +14,7 @@ class Base {
         require("models/user.php");
         $userModel = new User();
 
-        // request para servidor de apache:
+        // request to the apache server:
         $headers = apache_request_headers();
         
         foreach($headers as $header => $value) {
@@ -23,7 +23,8 @@ class Base {
             }
         }
 
-        $secret = "";
+        $secret = CONFIG["SECRET_KEY"];
+
         $isValid = Token::validate($token, $secret);
 
         if($isValid) {
@@ -31,7 +32,7 @@ class Base {
         }
 
         if( !empty($user) ) {
-        return $user["userId"];
+        return $user["user_id"];
         }
         
         return 0;
