@@ -3,18 +3,18 @@ require_once("base.php");
 
 class TraitToNation extends Base {
     
-    public function getTraitToNation($id) {
+    public function getTraitsByNation($id) {
         $query = $this -> db -> prepare("
             SELECT  
                 traits.trait_name,
                 traits.trait_description
             FROM    
-                traits_to_nations
+                traits_by_nation
             INNER JOIN
                 nations USING (nation_id)
             INNER JOIN
                 traits USING (trait_id)
-            WHERE   traits_to_nations.nation_id = ?
+            WHERE   traits_by_nation.nation_id = ?
         ");
 
         $query->execute([ $id ]);
@@ -26,7 +26,7 @@ class TraitToNation extends Base {
     public function create( $data ) {
 
         $query = $this->db->prepare("
-            INSERT INTO traits_to_nations
+            INSERT INTO traits_by_nation
             ( trait_id, nation_id)
             VALUES(?, ?)
         ");

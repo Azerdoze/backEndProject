@@ -22,13 +22,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
                 die('{"message":"Incorrect login information"}');
             }
 
-            echo json_encode($user);
-
             $payload = [
-                "userId" => $user["user_id"],
-                "mail" => $user["user_email"],
-                "name" => $user["user_name"],
-                "admin" => $user["is_admin"],
+                "user_id" => $user["user_id"],
+                "user_mail" => $user["user_email"],
+                "user_name" => $user["user_name"],
+                "is_admin" => $user["is_admin"],
                 "iat" => time()
             ];
 
@@ -38,7 +36,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
             
             header("X-AUTH-TOKEN: " . $token);
 
-            // echo '{"X-Auth-Token" : "'. $token .'"}';
+            echo '{
+                "X-Auth-Token" : "' .$token. '"
+            }';
 
         }
         else {

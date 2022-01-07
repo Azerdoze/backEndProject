@@ -11,8 +11,6 @@ class Base {
     }
 
     public function routeRequiresValidation() {
-        require("models/user.php");
-        $userModel = new User();
 
         // request to the apache server:
         $headers = apache_request_headers();
@@ -31,8 +29,8 @@ class Base {
             $user = Token::getPayload($token, $secret);
         }
 
-        if( !empty($user) ) {
-        return $user["user_id"];
+        if( isset($user) ) {
+        return $user;
         }
         
         return 0;

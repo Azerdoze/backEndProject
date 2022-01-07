@@ -1,9 +1,9 @@
 <?php
 require("models/nation.php");
-require("models/traits_to_nations.php");
+require("models/traits_by_nation.php");
 
 $nationmodel = new Nation();
-$traittonationmodel = new TraitToNation();
+$traitsbynation = new TraitToNation();
 
 // User Authentication & Admin Confirmation
 if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
@@ -76,12 +76,11 @@ if($_SERVER["REQUEST_METHOD"] === "GET" ) {
         
         if (!empty($nation)) {
 
-            $traits = $traittonationmodel->getTraitToNation($id);
+            $traits = $traitsbynation->getTraitsbyNation($id);
 
             $data = $nation;
 
             $data["traits"] = $traits;
-
             if(!empty($data))
             echo json_encode ($data);
         }

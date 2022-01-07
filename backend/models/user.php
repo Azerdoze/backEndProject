@@ -51,7 +51,8 @@ class User extends base {
                 user_email,
                 user_password,
                 user_country,
-                user_city
+                user_city,
+                is_admin
             FROM    users
             WHERE   user_id = ?
         ");

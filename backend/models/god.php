@@ -31,6 +31,10 @@ class God extends base {
             SELECT  
                 god_id,
                 god_name,
+                god_alignment,
+                god_domains,
+                god_mysteries,
+                god_fav_weapon,
                 pantheon_name AS belongs_to_pantheon
             FROM    
                 gods
