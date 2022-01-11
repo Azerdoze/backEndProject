@@ -22,24 +22,21 @@ if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
 
 // Sanitization Method for CRUD
 function sanitize($data) {
-    if(
-        !empty($data) &&
-        (
-            !isset($data["pantheon_banner"]) ||
-            isset($data["pantheon_banner"])
-        )
-    ) {
+    // if(
+        // !empty($data) &&
+        // (
+        //     !isset($data["pantheon_banner"]) ||
+        //     isset($data["pantheon_banner"])
+        // )
         $data["pantheon_name"] = trim(htmlspecialchars (strip_tags ($data["pantheon_name"]) ) );
         $data["pantheon_summary"] = trim(htmlspecialchars (strip_tags ($data["pantheon_summary"]) ) );
         $data["pantheon_description"] = trim(htmlspecialchars (strip_tags ($data["pantheon_description"]) ) );
         $data["pantheon_scope"] = trim(htmlspecialchars (strip_tags ($data["pantheon_scope"]) ) );
-
-        $sanitize_banner = trim(htmlspecialchars (strip_tags ($data["pantheon_banner"]) ) );
-        $data["pantheon_banner"] = str_replace("data:image/jpeg;base64,", "", $sanitize_banner);
+    // ) {
 
         return $data;
-    }
-    return false;
+    // }
+    // return false;
 }
 
 // Validation METHOD for CRUD
@@ -57,15 +54,7 @@ function validator($data) {
         mb_strlen($data["pantheon_description"]) <= 65535 &&
         isset($data["pantheon_scope"]) &&
         mb_strlen($data["pantheon_scope"]) >= 2 &&
-        mb_strlen($data["pantheon_scope"]) <= 50 &&
-        ( 
-            !isset($data["pantheon_banner"]) ||
-            (
-                isset($data["pantheon_banner"]) &&
-                mb_strlen($data["pantheon_banner"]) >= 0 &&
-                mb_strlen($data["pantheon_banner"]) <= 100
-            )
-        )
+        mb_strlen($data["pantheon_scope"]) <= 50
     ) {
         return true;
     }

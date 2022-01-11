@@ -42,17 +42,15 @@ class Pantheon extends base {
                 pantheon_name,
                 pantheon_summary,
                 pantheon_description,
-                pantheon_banner,
                 pantheon_scope
             )
-            VALUES(?, ?, ?, ?, ?)
+            VALUES(?, ?, ?, ?)
         ");
 
         $query->execute([
             $data["pantheon_name"],
             $data["pantheon_summary"],
             $data["pantheon_description"],
-            $data["pantheon_banner"],
             $data["pantheon_scope"]
         ]);
 
