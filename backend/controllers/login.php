@@ -25,7 +25,10 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
             $payload = [
                 "user_id" => $user["user_id"],
                 "user_mail" => $user["user_email"],
+                "user_password" => $user["user_password"],
                 "user_name" => $user["user_name"],
+                "user_country" => $user["user_country"],
+                "user_city" => $user["user_city"],
                 "is_admin" => $user["is_admin"],
                 "iat" => time()
             ];

@@ -5,7 +5,14 @@ class User extends base {
 
     public function login($data) {
         $query = $this->db->prepare("
-            SELECT user_id, user_email, is_admin, user_name, user_password
+            SELECT 
+                user_id,
+                user_name,
+                user_email,
+                user_password,
+                user_country,
+                user_city,
+                is_admin
             FROM users
             WHERE user_email = ?
         ");

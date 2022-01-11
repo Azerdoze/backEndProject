@@ -99,8 +99,9 @@ else if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 
     if (
         validator($data) &&
-        sanitize($data) &&
-        $nationmodel -> create ( $data ) ) {
+        sanitize($data) 
+        ) {
+        $nationmodel -> create ( $data );
 
         header("HTTP/1.1 202 Accepted");
 
