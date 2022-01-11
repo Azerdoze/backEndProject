@@ -62,7 +62,7 @@ class Order extends base {
                 order_rivals
             )
             VALUES
-                ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $query -> execute ([
