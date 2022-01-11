@@ -124,7 +124,7 @@ class God extends base {
     public function delete( $id ) {
         $query = $this->db->prepare("
             DELETE FROM gods
-            WHERE gods_id = ?
+            WHERE god_id = ?
         ");
 
         return $query->execute([
