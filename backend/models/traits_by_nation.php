@@ -6,6 +6,7 @@ class TraitToNation extends Base {
     public function getTraitsByNation($id) {
         $query = $this -> db -> prepare("
             SELECT  
+                traits.trait_id,
                 traits.trait_name,
                 traits.trait_description
             FROM    
@@ -39,5 +40,15 @@ class TraitToNation extends Base {
         return $this->db->lastInsertId();
     }
 
-    // change table to have a key equal do both trait_id+nation_id
+    public function delete( $traitid, $nationid ) {
+        $query = $this->db->prepare("
+            DELETE FROM traits_by_nation
+            WHERE (trait_id = ? AND nation_id = ?)
+        ");
+
+        return $query->execute([
+            $traitid, $nationid
+        ]);
+    }
+
 }

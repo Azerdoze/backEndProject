@@ -8,7 +8,7 @@ $traitsbynation = new TraitToNation();
 // User Authentication & Admin Confirmation
 if( in_array($_SERVER["REQUEST_METHOD"], ["POST","PUT","DELETE"]) ) {
 
-    $user = $model->routeRequiresValidation();
+    $user = $nationmodel->routeRequiresValidation();
 
     if( empty($user) ) {
         header("HTTP/1.1 401 Unauthorized");
@@ -44,11 +44,13 @@ function validator($data) {
         mb_strlen($data["nation_id"]) >= 2 &&
         mb_strlen($data["nation_id"]) <= 4 &&
         isset($data["nation_name"]) &&
-        mb_strlen($data["nation_name"]) >= 6 &&
+        mb_strlen($data["nation_name"]) >= 3 &&
         mb_strlen($data["nation_name"]) <= 50 &&
         isset($data["nation_summary"]) &&
         mb_strlen($data["nation_summary"]) <= 255 &&
         isset($data["nation_description"]) &&
+        mb_strlen($data["nation_description"]) >= 0 &&
+        mb_strlen($data["nation_description"]) <= 65535 &&
         isset($data["nation_hub"]) &&
         mb_strlen($data["nation_hub"]) >= 3 &&
         mb_strlen($data["nation_hub"]) <= 30 &&
@@ -56,8 +58,6 @@ function validator($data) {
         mb_strlen($data["nation_hub_description"]) >= 0 &&
         mb_strlen($data["nation_hub_description"]) <= 65535 &&
         isset($data["region_id"]) &&
-        mb_strlen($data["region_id"]) >= 2 &&
-        mb_strlen($data["region_id"]) <= 4 &&
         (
             !isset($data["belongs_to"]) ||
             (isset($data["belongs_to"]) &&
@@ -105,7 +105,7 @@ else if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 
         header("HTTP/1.1 202 Accepted");
 
-        echo '{"id":' . $data["nation_id"] . ', "message":"Success"}'; 
+        echo '{ "message":"Success"}'; 
 
     }
     else {
@@ -124,6 +124,7 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
         $id === $data["nation_id"]
         ) {
             $result = $nationmodel->update($id, $data);
+            
             if($result) {
                 header("HTTP/1.1 202 Accepted");
                 echo json_encode($data);
@@ -140,8 +141,10 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 }
 else if($_SERVER["REQUEST_METHOD"] === "DELETE" ) {
     if(!empty($id)) {
+        
+        var_dump($id);
         $result = $model->delete($id);
-
+        
         if($result) {
             header("HTTP/1.1 202 Accepted");
             echo '{"message":"Deleted ID ' .$id. '"}';

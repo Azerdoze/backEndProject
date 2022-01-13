@@ -88,11 +88,10 @@ class Nation extends base {
                     nation_description,
                     nation_hub,
                     nation_hub_description,
-                    nation_banner,
                     region_id,
                     belongs_to
                 )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         return $query -> execute ([
@@ -136,6 +135,7 @@ class Nation extends base {
         ]);
     }
     public function delete( $id ) {
+        
         $query = $this->db->prepare("
             DELETE FROM nations
             WHERE nation_id = ?

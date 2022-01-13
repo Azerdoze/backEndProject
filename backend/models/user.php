@@ -118,6 +118,62 @@ class User extends base {
             $id
         ]);
     }
+
+    public function updateRights( $id, $data ) {
+        $query = $this->db->prepare("
+        UPDATE
+            users
+        SET
+            is_admin = ?
+        WHERE
+            user_id = ?
+        ");
+
+        return $query->execute([
+            $data["is_admin"],
+            $id
+        ]);
+    }
+
+    public function makeAdmin ($user_id) {
+        $query = $this->db->prepare("
+            SELECT  is_admin
+            FROM    users
+            WHERE   user_id = ?
+        ");
+
+        $query->execute([
+            $user_id
+        ]);
+
+        $result = $query->fetch();
+        if ( $result["is_admin"] === "0") {
+            $query = $this->db->prepare("
+                UPDATE users
+                SET is_admin = 1
+                WHERE user_id = ?
+            ");
+
+            $query->execute([
+                $user_id
+            ]);
+
+            return true;
+        }
+        if ( $result["is_admin"] === "1") {
+            $query = $this->db->prepare("
+                UPDATE users
+                SET is_admin = 0
+                WHERE user_id = ?
+            ");
+
+            $query->execute([
+                $user_id
+            ]);
+            
+            return false;
+        }
+    }
     public function delete( $id ) {
         $query = $this->db->prepare("
             DELETE FROM users

@@ -37,7 +37,9 @@
             "orders",
             "users",
             "user_characters",
-            "login"
+            "login",
+            "traitstonation",
+            "userrights"
         ];
 
         $controller = $url_parts[2];
