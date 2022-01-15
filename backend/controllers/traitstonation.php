@@ -20,20 +20,56 @@ if( in_array($_SERVER["REQUEST_METHOD"], ["POST","DELETE"]) ) {
     }
 }
 
-// Sanitization Method for CRUD
+// Sanitization Method for POST
 function sanitize($data) {
     if( !empty($data) ) {
+
+        $data["trait_id"] = trim(htmlspecialchars (strip_tags ($data["trait_id"]) ) );
+        $data["nation_id"] = trim(htmlspecialchars (strip_tags ($data["nation_id"]) ) );
 
         return $data;
     }
     return false;
 }
 
-// Validation METHOD for CRUD
+// Sanitization Method for DELETE
+function sanitizeForDelete ($traitid, $nationid) {
+    if( !empty($traitid) & !empty($nationid) ) {
+        $traitid = trim(htmlspecialchars (strip_tags ($traitid) ) );
+        $nationid = trim(htmlspecialchars (strip_tags ($nationid) ) );
+
+        return $traitid & $nationid;
+    }
+    return false;
+}
+
+// Validation METHOD for POST
 
 function validator($data) {
     if(
-        !empty($data) 
+        !empty($data) &&
+        isset($data["nation_id"]) &&
+        mb_strlen($data["nation_id"]) >= 2 &&
+        mb_strlen($data["nation_id"]) <= 4 &&
+        isset($data["trait_id"]) &&
+        is_numeric($data["trait_id"])
+    ) {
+        return true;
+    }
+    return false;
+}
+
+// Validation METHOD for DELETE
+
+function validatorForDelete($traitid, $nationid) {
+    if(
+        !empty($traitid) &&
+        isset($traitid) &&
+        is_numeric($traitid) &&
+        !empty($nationid) &&
+        isset($nationid) &&
+        mb_strlen($nationid) >= 2 &&
+        mb_strlen($nationid) <= 4
     ) {
         return true;
     }
@@ -44,7 +80,7 @@ function validator($data) {
 if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
     
     $data = json_decode( file_get_contents("php://input"), true);
-
+    
     if ( validator($data) && sanitize($data) ) {
         $id = $model -> create ( $data );
 
@@ -59,12 +95,22 @@ if( $_SERVER["REQUEST_METHOD"] === "POST" ) {
     }
 }
 else if($_SERVER["REQUEST_METHOD"] === "DELETE" ) {
-    if(!empty($traitid)) {
-        $result = $model->delete($id);
+
+    $idsplit = explode("&", $id);
+
+    $traitid = $idsplit[0];
+    $nationid = $idsplit[1];
+    
+    if(
+        sanitizeForDelete($traitid, $nationid) &&
+        validatorForDelete($traitid, $nationid)
+        ) {
+
+        $result = $model->delete($traitid,$nationid);
 
         if($result) {
             header("HTTP/1.1 202 Accepted");
-            echo '{"message":"Deleted ID ' .$id. '"}';
+            echo '{"message":"Item Deleted Sucessfully"}';
         }
         else {
             header("HTTP/1.1 400 Bad Request");

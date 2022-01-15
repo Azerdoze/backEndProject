@@ -135,14 +135,14 @@ class Nation extends base {
         ]);
     }
     public function delete( $id ) {
-        
+
         $query = $this->db->prepare("
             DELETE FROM nations
             WHERE nation_id = ?
         ");
 
-        return $query->execute([
-            $id
-        ]);
+        $natid = $query->execute([ $id ]);
+
+        return $natid;
     }
 }

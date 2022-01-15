@@ -121,10 +121,10 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
     if(
         !empty($id) &&
         validator($data) &&
+        sanitize($data) &&
         $id === $data["nation_id"]
         ) {
             $result = $nationmodel->update($id, $data);
-            
             if($result) {
                 header("HTTP/1.1 202 Accepted");
                 echo json_encode($data);
@@ -141,10 +141,8 @@ else if($_SERVER["REQUEST_METHOD"] === "PUT" ) {
 }
 else if($_SERVER["REQUEST_METHOD"] === "DELETE" ) {
     if(!empty($id)) {
-        
-        var_dump($id);
-        $result = $model->delete($id);
-        
+        $result = $nationmodel->delete($id);
+
         if($result) {
             header("HTTP/1.1 202 Accepted");
             echo '{"message":"Deleted ID ' .$id. '"}';

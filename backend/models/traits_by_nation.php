@@ -41,14 +41,17 @@ class TraitToNation extends Base {
     }
 
     public function delete( $traitid, $nationid ) {
+
         $query = $this->db->prepare("
             DELETE FROM traits_by_nation
-            WHERE (trait_id = ? AND nation_id = ?)
+            WHERE trait_id = ? AND nation_id = ?
         ");
-
-        return $query->execute([
-            $traitid, $nationid
+            
+        $id = $query->execute([
+            $traitid,
+            $nationid
         ]);
-    }
 
+        return $id;
+    }
 }
