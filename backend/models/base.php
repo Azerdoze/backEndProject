@@ -16,7 +16,7 @@ class Base {
         $pass = '12341234';
 
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port;";
-        
+
         $this -> db = new PDO($dsn, $user, $pass);
     }
 
