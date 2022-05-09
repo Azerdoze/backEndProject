@@ -8,7 +8,16 @@ class Base {
     
     public function __construct() {
         // $this -> db = new PDO("mysql:host=localhost;dbname=projetobackend;charset=utf8mb4", "root", "");
-        $this -> db = new PDO("mysql:arthan-uthyl-reborn.c69jaifibnpl.eu-west-3.rds.amazonaws.com;port=3306;dbname=projetobackend;charset=utf8mb4", "eurico", "12341234");
+        $host = 'arthan-uthyl-reborn.c69jaifibnpl.eu-west-3.rds.amazonaws.com';
+        $db = 'projetobackend';
+        $port = '3306';
+        $charset = 'utf8mb4';
+        $user = 'eurico';
+        $pass = '12341234';
+
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port;";
+        
+        $this -> db = new PDO($dsn, $user, $pass);
     }
 
     public function routeRequiresValidation() {
